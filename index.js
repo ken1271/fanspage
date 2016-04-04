@@ -1,5 +1,4 @@
 $(document).ready(function(){
-  //getInfo(url+id+query+token);
   fbinit();
   render()
 })
@@ -18,26 +17,45 @@ var post={
   message:'',
   id:'',
   likes:[],
-  comments:''
+  comments:[],
+  likes_total:0,
+  comments_total:0,
 }
 
 function render(){
+    firebaseRef.set('')
     var input={
       id:'',
       date:''
     }
+    var posts=[]
     var ractive=new Ractive({
       el:'#output',
       template: '#template',
       data:{
-        //posts:posts,
+        posts:posts,
         input:input
       }
     });
-
+    firebaseRef.on('value',function(snapshot){
+      var posts=[];
+      snapshot.forEach(function(child){
+        console.log('child',child.key());
+        var post={
+          key:child.key(),
+          id:child.val().id,
+          message:child.val().message,
+          likes:child.val().likes_total,
+          comments:child.val().comments_total,
+        }
+        posts.push(post);
+      })
+      ractive.set('posts',posts)
+      console.log('ractiveposts',ractive.get('posts'));
+    })
     ractive.on('search',function(){
       firebaseRef.set('')
-      var query='?fields=posts.since(2016-03-28).limit(1)%7Bcomments.limit(300).summary(true)%2Clikes.limit(1000).summary(true)%2Cshares%2Cmessage%7D';
+      var query='?fields=posts.since(2016-01-01).limit(1)%7Bcomments.limit(300).summary(true)%2Clikes.limit(1000).summary(true)%2Cshares%2Cmessage%7D';
 
       FB.getLoginStatus(function(res){
         if(res.status==='connected'){
@@ -68,14 +86,15 @@ function dealPost(result){
   console.log('dealpost',result);
   initPosts(result.data[0]);
   console.log('post',post);
-  if(result.data[0].likes.paging.next){
+
+  if(result.data[0].likes.data.length>0&&result.data[0].likes.paging.hasOwnProperty('next')){
     getInfo(result.data[0].likes.paging.next);
     commentUrl=result.data[0].comments.paging.next;
     nextUrl=result.paging.next;
     console.log('commenturl',commentUrl);
   }
   else {
-    if(result.data[0].comments.paging.next){
+    if(result.data[0].comments.data.length>0&&result.data[0].comments.paging.hasOwnProperty('next')){
       getInfo(result.data[0].comments.paging.next);
       nextUrl=result.paging.next;
     }
@@ -159,6 +178,8 @@ function initPosts(info){
   post.likes=info.likes.data;
   post.comments=info.comments.data;
   post.id=info.id;
+  post.likes_total=info.likes.summary.total_count,
+  post.comments_total=info.comments.summary.total_count
 }
 function fbinit(){
   window.fbAsyncInit = function() {
