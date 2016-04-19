@@ -67,8 +67,19 @@ function render(){
           });
         }
       })
-
     });
+    ractive.on('likes',function(e){
+      console.log(e);
+      console.log(e.context.key);
+      var url='./view/likes.html?id='+e.context.key
+      window.open(url)
+    })
+    ractive.on('comments',function(e){
+      console.log(e);
+      console.log(e.context.key);
+      var url='./view/comments.html?id='+e.context.key
+      window.open(url)
+    })
 }
 function getInfo(url){
   console.log('getinfo',url);

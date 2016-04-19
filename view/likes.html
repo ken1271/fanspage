@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
+    <title>Likes List</title>
     <script src='https://cdn.firebase.com/js/client/2.3.1/firebase.js'></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -16,37 +16,22 @@
   </head>
   <body>
     <div id="output"></div>
-    <script id=template type="text/ractive">
-    <form class="form-inline" role="form">
-      <div class="form-group">
-        <div class="input-group">
-          <input type="text" class="form-control" id="exampleInputEmail2" placeholder="ID" value={{input.id}}>
-        </div>
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" id="exampleInputPassword2" placeholder="Date" value={{input.date}}>
-      </div>
-      <button type="button" class="btn btn-default" on-click='search'>search</button>
-    </form>
+    <script id='template' type="text/ractive">
     <table class='table table-bordered'>
       <thead>
         <tr class='info'>
-          <th>num</th>
-          <th>Message</th>
-          <th>like total</th>
-          <th>comment total</th>
+          <th>Num</th>
+          <th>Name</th>
+          <th>ID</th>
         </tr>
       </thead>
       <tbody>
-        {{#each posts:num}}
-        <tr data-key={{key}}>
+        {{#each info:num}}
+        <tr>
           <th>{{num+1}}</th>
-          <th><a href='https://www.facebook.com/{{id}}'>{{message}}</a></th>
+          <th><a href='https://www.facebook.com/{{id}}'>{{id}}</a></th>
           <th >
-            <button type="button" class="btn btn-default" on-click='likes'>{{likes}}</button><br>
-          </th>
-          <th>
-            <button type="button" class="btn btn-default" on-click='comments'>{{comments}}</button><br>
+            {{name}}<br>
           </th>
         </tr>
         {{/each}}
@@ -57,6 +42,6 @@
     <script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src='index.js' type="text/javascript"></script>
+    <script src='../js/likes.js' type="text/javascript"></script>
   </body>
 </html>
