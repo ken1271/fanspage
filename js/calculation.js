@@ -12,6 +12,7 @@ function Calculation(){
   self.method={
     addLikes : addLikes,
     addComments : addComments,
+    reset:reset
   };
 
 }
@@ -25,7 +26,7 @@ function addLikes(){
       this.data.likes_name.push(arguments[key].name);
     }
   }
-  
+
 }
 function addComments(info){
   console.log('addLikes',this);
@@ -38,4 +39,14 @@ function addComments(info){
     }
   }
 
+}
+function reset(){
+  this.data={
+    likes_total : 0,
+    likes_name : [],
+    likes_id : [],
+    comments_total : 0,
+    comments_name : [],
+    comments_id : []
+  };
 }

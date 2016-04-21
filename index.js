@@ -59,19 +59,27 @@ function render(){
     var cal = new Calculation();
 
     firebaseRef.on('child_added',function(snapshot){
-      console.log('num',num++);
-      console.log('child_added',snapshot.val());
-      console.log('calculation',cal);
+      // console.log('num',num++);
+      // console.log('child_added',snapshot.val());
+      // console.log('calculation',cal);
       cal.method.addLikes.apply(cal,snapshot.val().likes);
       cal.method.addComments.apply(cal,snapshot.val().comments);
+      console.log('set',cal.data);
       ref.set(cal.data);
+      console.log(123);
     })
     ractive.on('search',function(){
-      cal=new Calculation();
+
+      cal.method.reset.apply(cal);
+      console.log('search',cal);
       firebaseRef.set('');
       ref.set('');
-      var query='?fields=posts.since(2016-03-01).limit(1)%7Bcomments.limit(300).summary(true)%2Clikes.limit(1000).summary(true)%2Cshares%2Cmessage%7D';
-      ractive.set('show','block')
+      var date=ractive.get('input.date')
+      if(!date){
+        date='2016-03-01'
+      }
+      var query='?fields=posts.since('+date+').limit(1)%7Bcomments.limit(300).summary(true)%2Clikes.limit(1000).summary(true)%2Cshares%2Cmessage%7D';
+      ractive.set('show','inline-block')
       FB.getLoginStatus(function(res){
         if(res.status==='connected'){
           getInfo(url+ractive.get('input.id')+query);
