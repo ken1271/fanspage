@@ -17,8 +17,8 @@ function Calculation(){
 
 }
 function addLikes(){
-  console.log('addLikes',this);
-  console.log(arguments);
+  //console.log('addLikes',this);
+  //console.log(arguments);
   for(key in arguments){
     if(this.data.likes_id.indexOf(arguments[key].id)<0){
       this.data.likes_total++;
@@ -29,8 +29,8 @@ function addLikes(){
 
 }
 function addComments(info){
-  console.log('addLikes',this);
-  console.log(arguments);
+  //console.log('addLikes',this);
+  //console.log(arguments);
   for(key in arguments){
     if(this.data.comments_id.indexOf(arguments[key].from.id)<0){
       this.data.comments_total++;
