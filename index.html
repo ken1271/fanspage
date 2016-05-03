@@ -25,6 +25,7 @@
               <input type="text" class="form-control col-xs-3" id="" placeholder="ID" value={{input.id}}>
               <div id="selectBirthday" class="col-xs-5  row"></div>
               <button id='searchbtn' type="button" class="form-control btn btn-default col-xs-2" on-click='search'>search</button>
+              <button style='display:{{show}};' type="button" class="btn btn-default form-control col-xs-2" on-click='detail'>此段時間按讚與留言人數</button>
             </form>
         </form>
         <table class='table table-bordered'>
@@ -32,8 +33,8 @@
                 <tr class='info'>
                     <th>num</th>
                     <th>Message</th>
-                    <th>like total</th>
-                    <th>comment total</th>
+                    <th on-click='sortLikes'><p class='fa fa-sort-desc'></p>like total</th>
+                    <th on-click='sortComments'><p class='fa fa-sort-desc'></p>comment total</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,7 +68,6 @@
     <script src='./js/calculation.js' type="text/javascript"></script>
     <script src='./js/storage.js' type="text/javascript"></script>
     <script src='./js/third_party/ractive.js' type="text/javascript"></script>
-    <script src='./js/third_party/js.cookie.js' type="text/javascript"></script>
     <script src='./js/third_party/bday-picker.min.js' type="text/javascript"></script>
     <script src='./js/getInfo.js' type="text/javascript"></script>
     <script src='index.js' type="text/javascript"></script>

@@ -26,7 +26,7 @@ var commentUrl='',
     nextUrl='';
 
 var storage = new Storage();
-
+var cal = new Calculation();
 
 function render(){
     firebaseRef.set('')
@@ -41,7 +41,9 @@ function render(){
       data:{
         posts:posts,
         input:input,
-        show:'none'
+        show:'none',
+        likesort:1,//
+        commentsort:1,//
       }
     });
     //console.log(ractive.get('show'));
@@ -49,12 +51,21 @@ function render(){
 
     firebaseRef.on('value',function(snapshot){
       var data=storage.method.getPost.apply(storage)
+      data=data.sort(function (a, b) {
+        if (a.likes_total > b.likes_total) {
+          return -1;
+        }
+        else if (a.likes_total < b.likes_total) {
+          return 1;
+        }
+        // a must be equal to b
+        return 0;
+      });
       var posts=[];
       console.log('data',data);
       for(key in data){
-
         var post={
-          key:data[key],
+          key:key,
           id:data[key].id,
           message:data[key].message,
           likes:data[key].likes_total,
@@ -62,37 +73,18 @@ function render(){
         }
         posts.push(post);
       }
-      // snapshot.forEach(function(child){
-      //   var post={
-      //     key:child.key(),
-      //     id:child.val().id,
-      //     message:child.val().message,
-      //     likes:child.val().likes_total,
-      //     comments:child.val().comments_total,
-      //   }
-      //   posts.push(post);
-      // })
       ractive.set('posts',posts)
-      Cookies.set('data',data)
     })
     var num=1;
-    var cal = new Calculation();
 
     firebaseRef.on('child_added',function(snapshot){
-      // console.log('num',num++);
-      // console.log('child_added',snapshot.val());
-      // console.log('calculation',cal);
       cal.method.addLikes.apply(cal,snapshot.val().likes);
       cal.method.addComments.apply(cal,snapshot.val().comments);
-      //console.log('set',cal.data);
       ref.set(cal.data);
-      //console.log(123);
     })
     ractive.on('search',function(e){
       var formEvent=e.original.target.form;
-      //console.log(e);
       cal.method.reset.apply(cal);
-      //console.log('search',cal);
       firebaseRef.set('');
       ref.set('');
       var date=ractive.get('input.date')
@@ -119,7 +111,7 @@ function render(){
     });
     ractive.on('likes',function(e){
       var url='./view/likes.html?id='+e.context.key
-      window.open(url)
+      window.open(url,storage.method.getPost.apply(storage)[e.context.key])
     })
     ractive.on('comments',function(e){
       var url='./view/comments.html?id='+e.context.key
@@ -128,11 +120,78 @@ function render(){
     ractive.on('detail',function(){
       var url='./view/detail.html';
       window.open(url)
-    })
+    });
+    ractive.on('sortLikes',function(){
+      var post=ractive.get('posts');
+      if(ractive.get('likesort')>0){
+        ractive.set('likesort',-1);
+        post=post.sort(function(a,b){
+          if (a.likes > b.likes) {
+            return 1;
+          }
+          else if (a.likes < b.likes) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+      else {
+        ractive.set('likesort',1);
+        post=post.sort(function(a,b){
+          if (a.likes > b.likes) {
+            return -1;
+          }
+          else if (a.likes < b.likes) {
+            return 1;
+          }
+          // a must be equal to b
+          return 0;
+        });
+      }
+      ractive.set('posts',post);
+    });
+    ractive.on('sortComments',function(){
+      var post=ractive.get('posts');
+      if(ractive.get('commentsort')>0){
+        ractive.set('commentsort',-1);
+        post=post.sort(function(a,b){
+          if (a.comments > b.comments) {
+            return 1;
+          }
+          else if (a.comments < b.comments) {
+            return -1;
+          }
+          return 0;
+        });
+      }
+      else {
+        ractive.set('commentsort',1);
+        post=post.sort(function(a,b){
+          if (a.comments > b.comments) {
+            return -1;
+          }
+          else if (a.comments < b.comments) {
+            return 1;
+          }
+          // a must be equal to b
+          return 0;
+        });
+      }
+      ractive.set('posts',post);
+    });
 }
 function dateType(num){
   if(num.length<2){
     num='0'+num;
   }
   return num;
+}
+function sortLikes(a,b){
+  if (a.likes_total > b.likes_total) {
+    return 1;
+  }
+  else if (a.likes_total < b.likes_total) {
+    return -1;
+  }
+  return 0;
 }

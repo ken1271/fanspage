@@ -3,14 +3,13 @@ $(document).ready(function(){
 })
 
 function getInfo(){
-  var path="https://fans-page.firebaseio.com/";
-  var firebaseRef = new Firebase(path);
-  firebaseRef.on('value',function(snapshot){
-    var data=snapshot.val();
-    console.log(data);
-    console.log('fire',data[splitUrl().id].comments);
-    render(data[splitUrl().id].comments)
-  });
+  var data;
+  try{
+    data=window.opener.storage.post[splitUrl().id].comments;
+  }catch(e){
+    alert('error');
+  }
+  render(data)
 }
 function render(dataArr){
   var ractive=new Ractive({
@@ -20,7 +19,6 @@ function render(dataArr){
       info:dataArr
     }
   });
-  console.log(dataArr);
 }
 function splitUrl() {
     var args = new Object(); //object for search
