@@ -1,6 +1,16 @@
 $(document).ready(function(){
   fbinit();
-  render()
+  render();
+  //searchbtn();
+  $(window).load(function() {
+    $("#selectBirthday").birthdaypicker({
+        monthFormat: "short",
+        maxAge: 100,
+        futureDates: false,
+        defaultDate: '2016-03-01',
+        dateFormat: "bigEndian",
+    });
+  });
 })
 
 var path="https://fans-page.firebaseio.com/";
@@ -14,6 +24,8 @@ var id='GoodideasStudio'
 
 var commentUrl='',
     nextUrl='';
+    
+var storage = new Storage();
 
 var post={
   message:'',
@@ -68,16 +80,22 @@ function render(){
       ref.set(cal.data);
       console.log(123);
     })
-    ractive.on('search',function(){
-
+    ractive.on('search',function(e){
+      var formEvent=e.original.target.form;
+      console.log(e);
       cal.method.reset.apply(cal);
       console.log('search',cal);
       firebaseRef.set('');
       ref.set('');
       var date=ractive.get('input.date')
       if(!date){
-        date='2016-03-01'
+        date='2016-03-01';
       }
+      var year = formEvent[2].value;
+      var month = dateType(formEvent[3].value);
+      var day = dateType(formEvent[4].value);
+      date = year + '-' + month + '-' + day;
+      console.log('date',date);
       var query='?fields=posts.since('+date+').limit(1)%7Bcomments.limit(300).summary(true)%2Clikes.limit(1000).summary(true)%2Cshares%2Cmessage%7D';
       ractive.set('show','inline-block')
       FB.getLoginStatus(function(res){
@@ -103,4 +121,10 @@ function render(){
       var url='./view/detail.html';
       window.open(url)
     })
+}
+function dateType(num){
+  if(num.length<2){
+    num='0'+num;
+  }
+  return num;
 }

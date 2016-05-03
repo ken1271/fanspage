@@ -2,7 +2,7 @@ function getInfo(url){
   //console.log('getinfo',url);
   FB.api(url,'GET',function(result){
     //console.log(result);
-    if (result.hasOwnProperty('posts')) {
+    if (result.hasOwnProperty('posts')) {//確認是否為第一筆資料 回傳資料結構不同
       checkResultType(result.posts)
     }else {
       checkResultType(result)
@@ -82,17 +82,17 @@ function dealComment(result){
     }
   }
 }
-function checkResultType(result){
+function checkResultType(result){//判斷回傳的資料是贊 留言 或是下一則貼文
   //console.log('check',result);
-  if(result.data.length==0){
+  if(result.data.length==0){//資料長度為零時 代表沒有資料了
     //console.log('nopost');
     return;
   }
-  if(result.data[0].hasOwnProperty('shares')){
+  if(result.data[0].hasOwnProperty('shares')){//如果有shares 表示這是一則貼文的資料
     dealPost(result);
   }
   else {
-    if(result.hasOwnProperty('from')){
+    if(result.hasOwnProperty('from')){//如果有from 表示留言
       dealComment(result);
     }
     else {
@@ -101,7 +101,7 @@ function checkResultType(result){
   }
 }
 
-function initPosts(info){
+function initPosts(info){//將地一筆資料先存起來
   post.message=info.message;
   post.likes=info.likes.data;
   post.comments=info.comments.data;

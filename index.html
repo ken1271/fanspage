@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,52 +14,50 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
-  <body>
+</head>
+
+<body>
     <a href='./view/privacypolicy.html'>Privacy Policy</a>
     <div id="output"></div>
     <script id=template type="text/ractive">
-    <form class="form-inline" role="form">
-      <div class="form-group">
-        <div class="input-group">
-          <input type="text" class="form-control" id="exampleInputEmail2" placeholder="ID" value={{input.id}}>
-        </div>
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" id="exampleInputPassword2" placeholder="Date(2016-03-01)" value={{input.date}}>
-      </div>
-      <button type="button" class="btn btn-default" on-click='search'>search</button>
-      <button style='display:{{show}};' type="button" class="btn btn-default" on-click='detail'>此段時間按讚與留言人數</button>
-    </form>
-    <table class='table table-bordered'>
-      <thead>
-        <tr class='info'>
-          <th>num</th>
-          <th>Message</th>
-          <th>like total</th>
-          <th>comment total</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each posts:num}}
-        <tr data-key={{key}}>
-          <th>{{num+1}}</th>
-          <th><a href='https://www.facebook.com/{{id}}'>{{message}}</a></th>
-          <th >
-            <button type="button" class="btn btn-default" on-click='likes'>{{likes}}</button><br>
-          </th>
-          <th>
-            <button type="button" class="btn btn-default" on-click='comments'>{{comments}}</button><br>
-          </th>
-        </tr>
-        {{/each}}
-      </tbody>
-      <tfoot>
-        <tr>
+        <form class="form-inline" role="form">
+            <form class="row">
+              <input type="text" class="form-control col-xs-3" id="" placeholder="ID" value={{input.id}}>
+              <div id="selectBirthday" class="col-xs-5  row"></div>
+              <button id='searchbtn' type="button" class="form-control btn btn-default col-xs-2" on-click='search'>search</button>
+            </form>
+        </form>
+        <table class='table table-bordered'>
+            <thead>
+                <tr class='info'>
+                    <th>num</th>
+                    <th>Message</th>
+                    <th>like total</th>
+                    <th>comment total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each posts:num}}
+                <tr data-key={{key}}>
+                    <th>{{num+1}}</th>
+                    <th><a href='https://www.facebook.com/{{id}}'>{{message}}</a></th>
+                    <th>
+                        <button type="button" class="btn btn-default" on-click='likes'>{{likes}}</button>
+                        <br>
+                    </th>
+                    <th>
+                        <button type="button" class="btn btn-default" on-click='comments'>{{comments}}</button>
+                        <br>
+                    </th>
+                </tr>
+                {{/each}}
+            </tbody>
+            <tfoot>
+                <tr>
 
-        <tr>
-      </tfoot>
-    </table>
+                    <tr>
+            </tfoot>
+        </table>
     </script>
 
     <script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
@@ -66,7 +65,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src='./js/fbInit.js' type="text/javascript"></script>
     <script src='./js/calculation.js' type="text/javascript"></script>
+    <script src='./js/third_party/bday-picker.min.js' type="text/javascript"></script>
     <script src='./js/getInfo.js' type="text/javascript"></script>
     <script src='index.js' type="text/javascript"></script>
-  </body>
+</body>
+
 </html>
