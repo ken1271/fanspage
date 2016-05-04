@@ -24,8 +24,9 @@
             <form class="row">
               <input type="text" class="form-control col-xs-3" id="" placeholder="ID" value={{input.id}}>
               <div id="selectBirthday" class="col-xs-5  row"></div>
-              <button id='searchbtn' type="button" class="form-control btn btn-default col-xs-2" on-click='search'>search</button>
+              <button id='searchbtn' type="button" class="form-control btn btn-default col-xs-1" on-click='search'>search</button>
               <button style='display:{{show}};' type="button" class="btn btn-default form-control col-xs-2" on-click='detail'>此段時間按讚與留言人數</button>
+              <a href="data:text/csv;charset=utf-8,{{csv}}" download="data.csv"><button style='display:{{show}};' type="button" class="btn btn-default form-control col-xs-1" on-click='download'>Download</button></a>
             </form>
         </form>
         <table class='table table-bordered'>

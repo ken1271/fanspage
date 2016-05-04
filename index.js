@@ -73,7 +73,8 @@ function render(){
         }
         posts.push(post);
       }
-      ractive.set('posts',posts)
+      ractive.set('posts',posts);
+      ractive.set('csv',convertCSV(ractive.get('posts')));
     })
     var num=1;
 
@@ -81,16 +82,12 @@ function render(){
       cal.method.addLikes.apply(cal,snapshot.val().likes);
       cal.method.addComments.apply(cal,snapshot.val().comments);
       ref.set(cal.data);
-    })
+    });
     ractive.on('search',function(e){
       var formEvent=e.original.target.form;
       cal.method.reset.apply(cal);
       firebaseRef.set('');
       ref.set('');
-      var date=ractive.get('input.date')
-      if(!date){
-        date='2016-03-01';
-      }
       var year = formEvent[2].value;
       var month = dateType(formEvent[3].value);
       var day = dateType(formEvent[4].value);
@@ -194,4 +191,16 @@ function sortLikes(a,b){
     return -1;
   }
   return 0;
+}
+function convertCSV(data){
+  //console.log(data);
+  var str='Num,ID,Message,Likes,Comments'+'\r\n';
+  for(key in data){
+    for(index in data[key]){
+      str+=data[key][index]+',';
+    }
+    str=str.slice(0,str.length-1)+'\r\n';
+  }
+  console.log('str',str);
+  return str;
 }
