@@ -37,7 +37,7 @@ function render(){
     var posts=[]
     var ractive=new Ractive({
       el:'#output',
-      template: '#template',
+      template: '#fbsearch',
       data:{
         posts:posts,
         input:input,
@@ -74,7 +74,7 @@ function render(){
         posts.push(post);
       }
       ractive.set('posts',posts);
-      ractive.set('csv',convertCSV(ractive.get('posts')));
+      //ractive.set('csv',convertCSV(ractive.get('posts')));
     })
     var num=1;
 
@@ -107,12 +107,10 @@ function render(){
       })
     });
     ractive.on('likes',function(e){
-      var url='./view/likes.html?id='+e.context.key
-      window.open(url,storage.method.getPost.apply(storage)[e.context.key])
-    })
+      openUrl(e,'likes');
+    });
     ractive.on('comments',function(e){
-      var url='./view/comments.html?id='+e.context.key
-      window.open(url)
+      openUrl(e,'comments');
     })
     ractive.on('detail',function(){
       var url='./view/detail.html';
@@ -176,6 +174,14 @@ function render(){
       }
       ractive.set('posts',post);
     });
+    ractive.on('download',function(e){
+      var formEvent=e.original.target.form;
+      var year = formEvent[2].value;
+      var month = dateType(formEvent[3].value);
+      var day = dateType(formEvent[4].value);
+      date = '_'+year + '-' + month + '-' + day;
+      $('#datatable').tableExport({type:'csv',escape:'false',tableName:ractive.get('input.id')+date});
+    })
 }
 function dateType(num){
   if(num.length<2){
@@ -193,14 +199,20 @@ function sortLikes(a,b){
   return 0;
 }
 function convertCSV(data){
+  var symbol=String.fromCharCode(0x0d);
   //console.log(data);
-  var str='Num,ID,Message,Likes,Comments'+'\r\n';
+  var str='Num,ID,Message,Likes,Comments'+"\r\n";
   for(key in data){
     for(index in data[key]){
-      str+=data[key][index]+',';
+      str+='"'+data[key][index].toString()+'"'+',';
     }
-    str=str.slice(0,str.length-1)+'\r\n';
+    str+="\r\n";
   }
   console.log('str',str);
   return str;
 }
+function openUrl(e,name){
+  var url='./view/'+name+'.html?id='+e.context.key;
+  window.open(url,storage.method.getPost.apply(storage)[e.context.key])
+}
+//<a href="data:text/csv;charset=utf-8,{{csv}}" download="data.csv"><button style='display:{{show}};' type="button" class="btn btn-default form-control col-xs-1" on-click='download'>Download</button></a>//
