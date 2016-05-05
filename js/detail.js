@@ -1,6 +1,6 @@
 $(document).ready(function(){
   getInfo()
-})
+});
 
 function getInfo(){
   var data;
@@ -9,7 +9,7 @@ function getInfo(){
   }catch(e){
     alert('error');
   }
-  render(data)
+  render(data.data);
 }
 function render(dataArr){
   var ractive=new Ractive({
@@ -19,4 +19,7 @@ function render(dataArr){
       info:dataArr
     }
   });
+  ractive.on('download',function(){
+    $('#datatable').tableExport({type:'csv',escape:'false',tableName:window.opener.id+window.opener.date+'_total'});
+  })
 }

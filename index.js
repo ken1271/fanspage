@@ -1,7 +1,7 @@
 $(document).ready(function(){
   fbinit();
   render();
-  //searchbtn();
+  
   $(window).load(function() {
     $("#selectBirthday").birthdaypicker({
         monthFormat: "short",

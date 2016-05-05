@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Likes List</title>
-    <script src='https://cdn.firebase.com/js/client/2.3.1/firebase.js'></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
@@ -17,27 +16,29 @@
   <body>
     <div id="output"></div>
     <script id='template' type="text/ractive">
-    <table class='table table-bordered'>
+    <button type="button" class="btn btn-info form-control" on-click='download'>Download</button>
+    <table id='datatable' class='table table-bordered'>
       <thead>
         <tr class='info'>
-          <th>Likes: {{info.likes_total}}</th>
-          <th>Comments: {{info.comments_total}}</th>
+          <th>{{info.likes_total}}人按讚</th>
+          <th>{{info.comments_total}}人回應</th>
         </tr>
       </thead>
       <tbody>
       {{#each info.likes_id:num}}
         <tr>
-          <th>{{num+1}}. <a href='https://www.facebook.com/{{.}}'>{{info.likes_name[num]}}</a></th>
-          <th><a href='{{info.comments_id[num]}}'>{{info.comments_name[num]}}</a></th>
+          <td>{{num+1}}. <a href='https://www.facebook.com/{{.}}'>{{.}}</a></td>
+          <td>ID:<a href='https://www.facebook.com/{{info.comments_id[num]}}'>{{info.comments_id[num]}}</a></td>
         </tr>
       {{/each}}
       </tbody>
     </table>
     </script>
 
-    <script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
+    <script src='../js/third_party/ractive.js' type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src='../js/detail.js' type="text/javascript"></script>
+    <script type="text/javascript" src="../js/third_party/tableExport.js"></script>
+    <script type="text/javascript" src="../js/third_party/jquery.base64.js"></script>
   </body>
 </html>
